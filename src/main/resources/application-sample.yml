@@ -1,0 +1,28 @@
+spring:
+  redis:
+    connect-timeout: ${CONNECT_TIMEOUT}
+    host: ${HOST}
+    port: ${PORT}
+
+  jpa:
+    open-in-view: ${VALUE}
+    properties:
+      hibernate:
+        show_sql: ${VALUE}
+        format_sql: ${VALUE}
+        default_batch_fetch_size: ${BATCH_FETCH_SIZE}
+    hibernate:
+      ddl-auto: ${DDL_PLAN}
+
+  datasource:
+    type: ${TYPE}
+    driver-class-name: ${DRIVER_CLASS_NAME}
+    url: ${URL}
+    username: ${USERNAME}
+    password: ${PASSWORD}
+
+server:
+  port: ${PORT}
+
+buckpal:
+  transferThreshold: ${TRANSFER_THRESHOLD}

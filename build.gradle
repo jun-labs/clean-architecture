@@ -1,0 +1,53 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.8'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+group = 'project.architecture.remittance'
+version = '0.0.1-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java-library'
+
+repositories {
+    mavenCentral()
+}
+
+compileJava {
+    sourceCompatibility = 11
+    targetCompatibility = 11
+}
+
+dependencies {
+    // SpringBoot
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-validation')
+
+    // JPA
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+
+    // MySQL
+    implementation(group: 'mysql', name: 'mysql-connector-java', version: '8.0.28')
+    runtimeOnly('mysql:mysql-connector-java')
+
+    // Test
+    implementation('junit:junit:4.13.2')
+    implementation(group: 'com.tngtech.archunit', name: 'archunit', version: '0.22.0')
+    implementation(group: 'com.navercorp.fixturemonkey', name: 'fixture-monkey', version: '0.4.12')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.mockito:mockito-junit-jupiter:2.23.0')
+
+
+    // Lombok
+    compileOnly('org.projectlombok:lombok:1.18.22')
+    testCompileOnly('org.projectlombok:lombok:1.18.12')
+    testAnnotationProcessor('org.projectlombok:lombok:1.18.24')
+    annotationProcessor('org.projectlombok:lombok')
+    annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
+}
+
+test {
+    useJUnitPlatform()
+}
+
