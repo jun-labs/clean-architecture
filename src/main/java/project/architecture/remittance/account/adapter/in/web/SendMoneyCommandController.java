@@ -1,6 +1,5 @@
 package project.architecture.remittance.account.adapter.in.web;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +13,13 @@ import project.architecture.remittance.common.annotation.WebAdapter;
 
 @WebAdapter
 @RestController
-@RequiredArgsConstructor
 class SendMoneyCommandController {
 
     private final SendMoneyUseCase sendMoneyUseCase;
+
+    public SendMoneyCommandController(SendMoneyUseCase sendMoneyUseCase) {
+        this.sendMoneyUseCase = sendMoneyUseCase;
+    }
 
     @PostMapping(path = "/accounts/send/{sourceAccountId}/{targetAccountId}/{amount}")
     ResponseEntity<SendMoneyResponse> sendMoney(
