@@ -46,6 +46,10 @@ public class Account {
         return activityWindow;
     }
 
+    public int getActivityWindowSize() {
+        return activityWindow.size();
+    }
+
     public Money calculateBalance() {
         return Money.add(this.baselineBalance, this.activityWindow.calculateBalance(this.id));
     }
@@ -81,5 +85,4 @@ public class Account {
         this.activityWindow.addActivity(deposit);
         return true;
     }
-
 }
