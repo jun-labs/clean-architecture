@@ -28,6 +28,10 @@ public class ActivityWindow {
         return Collections.unmodifiableList(this.activities);
     }
 
+    public int size() {
+        return this.activities.size();
+    }
+
     public LocalDateTime getStartTimestamp() {
         return activities.stream()
                 .min(Comparator.comparing(Activity::getTimestamp))
@@ -47,12 +51,10 @@ public class ActivityWindow {
                 .filter(isEqualToTargetId(accountId))
                 .map(Activity::getMoneyAsValue)
                 .reduce(Money.ZERO, Money::add);
-
         Money withdrawalBalance = activities.stream()
                 .filter(isEqualToSourceId(accountId))
                 .map(Activity::getMoneyAsValue)
                 .reduce(Money.ZERO, Money::add);
-
         return Money.add(depositBalance, withdrawalBalance.negate());
     }
 
