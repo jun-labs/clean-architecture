@@ -10,14 +10,7 @@ public class Money {
     private final BigInteger amount;
 
     private Money(long amount) {
-        validateMoney(amount);
         this.amount = BigInteger.valueOf(amount);
-    }
-
-    private void validateMoney(long amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("금액이 올바르지 않습니다.");
-        }
     }
 
     private Money(BigInteger amount) {
@@ -26,8 +19,8 @@ public class Money {
     }
 
     private void validateMoney(BigInteger amount) {
-        if (Objects.isNull(amount) || amount.intValue() < 0 || amount.longValue() < 0) {
-            throw new IllegalArgumentException("금액이 올바르지 않습니다.");
+        if (Objects.isNull(amount)) {
+            throw new IllegalArgumentException("금액을 입력해주세요.");
         }
     }
 
