@@ -31,13 +31,17 @@ dependencies {
     implementation(group: 'mysql', name: 'mysql-connector-java', version: '8.0.28')
     runtimeOnly('mysql:mysql-connector-java')
 
+    // Redis
+    implementation('org.springframework.boot:spring-boot-starter-data-redis')
+    implementation("org.redisson:redisson-spring-boot-starter:3.16.8")
+    compile(group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2')
+
     // Test
     implementation('junit:junit:4.13.2')
     implementation(group: 'com.tngtech.archunit', name: 'archunit', version: '0.22.0')
     implementation(group: 'com.navercorp.fixturemonkey', name: 'fixture-monkey', version: '0.4.12')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.mockito:mockito-junit-jupiter:2.23.0')
-
 
     // Lombok
     compileOnly('org.projectlombok:lombok:1.18.22')
