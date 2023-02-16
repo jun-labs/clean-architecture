@@ -1,25 +1,35 @@
 package project.architecture.remittance.account.adapter.out.persistence;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import project.architecture.remittance.account.application.port.out.LoadAccountPort;
 import project.architecture.remittance.account.application.port.out.UpdateAccountStatePort;
 import project.architecture.remittance.account.domain.Account;
 import project.architecture.remittance.account.domain.AccountId;
 import project.architecture.remittance.account.domain.Activity;
 import project.architecture.remittance.common.annotation.PersistenceAdapter;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
+@Slf4j
 @PersistenceAdapter
-@RequiredArgsConstructor
 class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccountStatePort {
 
     private final SpringDataAccountRepository accountRepository;
     private final ActivityRepository activityRepository;
     private final AccountMapper accountMapper;
+
+    public AccountPersistenceAdapter(
+            SpringDataAccountRepository accountRepository,
+            ActivityRepository activityRepository,
+            AccountMapper accountMapper
+    ) {
+        this.accountRepository = accountRepository;
+        this.activityRepository = activityRepository;
+        this.accountMapper = accountMapper;
+    }
 
     @Override
     public Account loadAccount(
@@ -28,7 +38,7 @@ class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccountStatePo
     ) {
         AccountJpaEntity account = accountRepository.findById(accountId.getValue())
                 .orElseThrow(EntityNotFoundException::new);
-        List<ActivityJpaEntity> activities = activityRepository.findByOwnerSince(
+        List<ActivityJpaEntity> activities = activityRepository.findByOwnerAccountIdAndTimestamp(
                 accountId.getValue(),
                 baselineDate
         );
@@ -42,6 +52,8 @@ class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccountStatePo
                         baselineDate
                 )
         );
+        log.info("인출: {}", withdrawalBalance);
+        log.info("입금: {}", depositBalance);
         return accountMapper.mapToDomainEntity(
                 account,
                 activities,
@@ -58,7 +70,7 @@ class AccountPersistenceAdapter implements LoadAccountPort, UpdateAccountStatePo
     public void updateActivities(Account account) {
         List<Activity> activities = account.getActivityWindow().getActivities();
         for (Activity activity : activities) {
-            if (!Objects.isNull(activity.getId())) {
+            if (activity.getId() == null) {
                 activityRepository.save(accountMapper.mapToJpaEntity(activity));
             }
         }
