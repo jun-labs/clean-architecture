@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import project.architecture.remittance.account.domain.Account;
 import project.architecture.remittance.account.domain.AccountId;
 import project.architecture.remittance.account.domain.Activity;
+import project.architecture.remittance.account.domain.ActivityId;
 import project.architecture.remittance.account.domain.ActivityWindow;
 import project.architecture.remittance.account.domain.Money;
 
@@ -21,11 +22,13 @@ class AccountMapper {
     ) {
         Money baselineBalance = Money.subtract(
                 Money.of(depositBalance),
-                Money.of(withdrawalBalance));
+                Money.of(withdrawalBalance)
+        );
         return Account.withId(
                 new AccountId(account.getId()),
                 baselineBalance,
-                mapToActivityWindow(activities));
+                mapToActivityWindow(activities)
+        );
 
     }
 
@@ -35,6 +38,7 @@ class AccountMapper {
         for (ActivityJpaEntity activity : activities) {
             mappedActivities.add(
                     new Activity(
+                            new ActivityId(activity.getId()),
                             new AccountId(activity.getOwnerAccountId()),
                             new AccountId(activity.getSourceAccountId()),
                             new AccountId(activity.getTargetAccountId()),
