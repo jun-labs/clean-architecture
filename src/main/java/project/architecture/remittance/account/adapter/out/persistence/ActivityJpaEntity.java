@@ -93,6 +93,18 @@ class ActivityJpaEntity {
 
     @Override
     public String toString() {
-        return id.toString();
+        return "ActivityJpaEntity{" +
+                "id=" + id +
+                ", timestamp=" + timestamp +
+                ", ownerAccountId=" + ownerAccountId +
+                ", sourceAccountId=" + sourceAccountId +
+                ", targetAccountId=" + targetAccountId +
+                ", amount=" + amount +
+                '}';
     }
+
+    //    @Override
+//    public String toString() {
+//        return id.toString();
+//    }
 }
